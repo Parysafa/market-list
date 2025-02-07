@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "IRANSans";
+  src: url("/fonts/IRANSans-Regular.woff2") format("woff2"),
+    url("/fonts/IRANSans-Regular.woff") format("woff");
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: "IRANSans";
+  src: url("/fonts/IRANSans-Bold.woff2") format("woff2"),
+    url("/fonts/IRANSans-Bold.woff") format("woff");
+  font-weight: bold;
+}
+
+@theme {
+  --color-primary: #0a1f44;
+  --color-secondary: #072d6d;
+  --color-accent: #007bff;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "IRANSans", sans-serif;
+  direction: rtl;
+  text-align: right;
+}

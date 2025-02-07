@@ -1,6 +1,8 @@
 import { useQueries } from "@tanstack/react-query";
 import { getCurrencies, get24hTickers } from "../services/api";
-const IMAGE_BASE_URL = "https://cdn.hitobit.com/";
+import { ICurrencies, ITickerService } from "../interfaces/services";
+
+const IMAGE_BASE_URL = import.meta.env.VITE_APP_IMAGE_BASE_URL
 
 export const useMarketData = () => {
   const queries = useQueries({
@@ -16,15 +18,15 @@ export const useMarketData = () => {
     ],
   });
 
-  const currencies = queries[0].data;
-  const tickers = queries[1].data;
+  const currencies: ICurrencies[] = queries[0].data;
+  const tickers = queries[1].data ?? [];
   const isLoading = queries.some((q) => q.isLoading);
 
-  const mergedData = tickers
-    ?.map((ticker) => {
+  const mergedData = Array.isArray(tickers) && tickers
+    ?.map((ticker: ITickerService) => {
       try {
         const baseCurrency = currencies?.find(
-          (c) => c.symbol === ticker.baseCurrencySymbol
+          (c: ICurrencies) => c.symbol === ticker.baseCurrencySymbol
         );
 
         if (!baseCurrency) {
@@ -33,10 +35,6 @@ export const useMarketData = () => {
           );
           return null;
         }
-
-        const quoteCurrency = currencies?.find(
-          (c) => c.symbol === ticker.quoteCurrencySymbol
-        );
 
         return {
           id: ticker.symbol,
@@ -52,15 +50,18 @@ export const useMarketData = () => {
           priceChangePercent: ticker.priceChangePercent,
         };
       } catch (error) {
-        console.error("Error processing ticker:", error);
         return null;
       }
     })
     .filter(Boolean);
 
+
+  // we use useQueries hook so maybe we have 2 kind of errors !
+  const errorReason = queries.find((q) => q.error)?.error;
+
   return {
     data: mergedData,
     isLoading,
-    error: queries.find((q) => q.error)?.error,
+    error: errorReason,
   };
 };

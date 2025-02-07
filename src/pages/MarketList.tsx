@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { CSSProperties, useState } from "react";
+// virtual
 import { FixedSizeList as List } from "react-window";
+// hooks
 import { useMarketData } from "../hooks/useMarketData";
-import MarketItem from "../components/MarketItem";
-import SearchBar from "../components/SearchBar";
+// components
 import Spinner from "../components/Spinner";
+import SearchBar from "../components/SearchBar";
+import MarketItem from "../components/MarketItem";
 
 const MarketList: React.FC = () => {
   const { data, isLoading } = useMarketData();
@@ -33,13 +36,13 @@ const MarketList: React.FC = () => {
   };
 
   return (
-    <div className="bg-primary min-h-screen flex justify-center items-center  text-white p-6">
-      <div className="w-full p-6">
+    <div className="bg-primary min-h-screen flex justify-center items-center  text-white">
+      <div className="min-h-screen w-full p-6">
         <h1 className="text-3xl font-bold mb-10 ">قیمت لحظه‌ای بازار</h1>
         <div className="mb-6">
           <SearchBar onChange={setSearch} />
         </div>
-        <div className="mt-4">
+        <div className="mt-4 h-full ">
           <div className="grid grid-cols-3 items-center font-semibold px-4 py-3 bg-secondary border-b border-gray-600">
             <p className="flex text-gray-300 justify-center">نام رمزارز</p>
 
@@ -70,13 +73,14 @@ const MarketList: React.FC = () => {
             </div>
           ) : sortedMarkets?.length ? (
             <List
-              height={600}
+              height={610}
               itemCount={sortedMarkets.length}
               itemSize={100}
               width="100%"
+              style={{ direction: "rtl" }}
             >
-              {({ index, style }) => (
-                <div style={style}>
+              {({ index, style }: { index: number; style: CSSProperties }) => (
+                <div className="bg-secondary" style={style}>
                   <MarketItem
                     key={sortedMarkets[index].id}
                     {...sortedMarkets[index]}

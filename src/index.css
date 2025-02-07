@@ -24,6 +24,28 @@ body {
   margin: 0;
   padding: 0;
   font-family: "IRANSans", sans-serif;
-  direction: rtl;
+  direction: rtl !important;
   text-align: right;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  border: 1px solid var(--color-accent);
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--color-accent);
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
